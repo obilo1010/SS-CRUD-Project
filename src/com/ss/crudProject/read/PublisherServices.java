@@ -173,7 +173,7 @@ public int mapIterator(HashMap<String, String> map) {
 			System.out.println(name+" has been added as a publisher");
 			writer.flush();
 			
-			displayMenu();
+			//displayMenu();
 			
 		} catch(IOException e) {
 			

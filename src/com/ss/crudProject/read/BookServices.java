@@ -65,6 +65,8 @@ public class BookServices extends UtilityClass implements Menu{
             	
             	String publisher = getPublisher();
             	
+            	System.out.println(author);
+            	System.out.println(publisher);
             	
             	addBook(bookTitle, author, publisher);
             			
@@ -86,14 +88,14 @@ public class BookServices extends UtilityClass implements Menu{
         	
         	System.out.print("Functionality not ready yet");
         	System.out.print("\n");
-        	displayMenu();
+        	//displayMenu();
         }
         
         if (action == 3) {
         	
         	System.out.print("Functionality not ready yet");
         	System.out.print("\n");
-        	displayMenu();
+        	//displayMenu();
         	
 //        	System.out.println("Enter the key of the book you wish to delete\n" + bookOptions());
 //        	Scanner n = new Scanner(System.in);
@@ -196,12 +198,13 @@ int bookMapIterator(HashMap<String, String> map) {
 			writer.newLine();
 			
 			System.out.println(title+" has been added");
+			writer.flush();
 			
 			
 		} catch(IOException e) {
 			
 			System.out.println("Failed to find books.txt");
-			displayMenu();
+			//displayMenu();
 			
 		}
 				

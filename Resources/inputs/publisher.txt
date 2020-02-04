@@ -12,3 +12,11 @@
 12 iahhdbdb pubs
 13 Okey's Pubs
 14 harlem pubs
+15 Yangs Publishing
+16 Force Jedi Publishers
+17 Toms Publishing
+18 Types Pubs
+19 Basheba pubs
+20 Ivy's publishers
+21 Ned Stark Publishing
+22 Burr's Publishing
