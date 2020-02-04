@@ -173,37 +173,40 @@ protected HashMap<String, String> createBookHashMap(File file) {
 		return map;
 	}
 
-//public String getLineToDelete(Integer input) {
-//	AuthorServices as = new AuthorServices();
-//	String str = null;
-//	try {
-//		Scanner s = new Scanner(as.file);
-//		
-//		StringBuilder strBuilder = new StringBuilder();
-//		
-//		while (s.hasNextLine()) {
-//			String data = s.nextLine();
-//			String[] strs = data.split("\\s+");
-//			Integer id = Integer.parseInt(strs[0]);
-//			for (int i = 0; i< strs.length; i++) {
-//				
-//				if (id == input) {
-//					strBuilder = strBuilder.append(strs[i]+ " ");
-//				}
-//			}
-//		}
-//		str = strBuilder.toString();
-//		s.close();
-//		
-//		
-//	} catch (FileNotFoundException e) {
-//		System.out.println("File Not Found");
-//		as.displayMenu();
-//	
-//}
-//	return str;
-//
-//}
+public static String getLineToEdit(Integer input) {
+	AuthorServices as = new AuthorServices();
+	String str = null;
+	try {
+		Scanner s = new Scanner(as.file);
+		
+		StringBuilder strBuilder = new StringBuilder();
+		
+		while (s.hasNextLine()) {
+			String data = s.nextLine();
+			String[] strs = data.split("\\s+");
+			Integer id = Integer.parseInt(strs[0]);
+			for (int i = 0; i< strs.length; i++) {
+				
+				if (id == input) {
+					strBuilder = strBuilder.append(strs[i]+ " ");
+				}
+			}
+		}
+		
+		
+		str = strBuilder.toString();
+		System.out.println(str);
+		s.close();
+		
+		
+	} catch (FileNotFoundException e) {
+		System.out.println("File Not Found");
+		as.displayMenu();
+	
+}
+	return str;
+
+}
 }
 
 

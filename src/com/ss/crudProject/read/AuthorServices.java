@@ -32,7 +32,7 @@ public class AuthorServices extends UtilityClass implements Menu  {
 //	public static void main(String[] args) {
 //		//AuthorServices m = new AuthorServices();
 //		//m.displayMenu();
-//		UtilityClass.getAuthorId("1");
+//		UtilityClass.getLineToEdit(4);
 //		//m.deleteMapIterator(map);
 ////		System.out.println(m.createHashMap(file));
 ////		
@@ -47,8 +47,8 @@ public class AuthorServices extends UtilityClass implements Menu  {
 	public void displayMenu() {
 		
 		int action;
-		HashMap<String, String> pam = createHashMap(file);
-		deleteMapIterator(pam);
+		//HashMap<String, String> pam = createHashMap(file);
+	
 		Scanner userSelection = new Scanner(System.in);
 		
 		System.out.println("1. Add Author");
@@ -94,30 +94,27 @@ public class AuthorServices extends UtilityClass implements Menu  {
         
         if (action == 2) {
         	
-        	System.out.print("Functionality not ready yet");
-        	displayMenu();
+        	Scanner n = new Scanner(System.in);
+        	System.out.println("Enter the key of  the author you want to edit\n"+ "Enter '0' to return to previous menu"+ authorOptions());
         	
-//        	Scanner n = new Scanner(System.in);
-//        	System.out.println("Enter the key of  the author you want to edit\n"+ "Enter '0' to return to previous menu"+ authorOptions());
-//        	
-//        	String userInput = n.nextLine();
-//    		Integer input = Integer.parseInt(userInput);
-//    		
-//    		if (input == 0) {
-//    			displayMenu();
-//    			
-//    		}
-//    		
-//    		else {
-//    			
-//    			input = read_range(n, 1, mapIterator(map));
-//    			
-//    			String firstName = getUpdatedFirstName();
-//            	
-//            	String lastName = getUpdatedLastName();
-//            	
-//            	editAuthor(firstName, lastName, input);
-//    		}
+        	String userInput = n.nextLine();
+    		Integer input = Integer.parseInt(userInput);
+    		
+    		if (input == 0) {
+    			displayMenu();
+    			
+    		}
+    		
+    		else {
+    			
+    			input = read_range(n, 1, mapIterator(map));
+    			
+    			String firstName = getUpdatedFirstName();
+            	
+            	String lastName = getUpdatedLastName();
+            	
+            	editAuthor(firstName, lastName, input);
+    		}
         	
         	
         }
@@ -343,43 +340,16 @@ public HashMap<String, String> createHashMap(File file) {
 				
 					
 				    
-					
+	public void editAuthor(String fn, String ln, Integer input) {
+		
+
+	}				
 				
 		
  
 }
 
-//	public void editAuthor(String fn, String ln, Integer input) {
-//		
-//		
-//		    try {
-//		        // input the (modified) file content to the StringBuffer "input"
-//		        BufferedReader infile = new BufferedReader(new FileReader(uri));
-//		        StringBuffer inBuffer = new StringBuffer();
-//		        String line;
-//
-//		        while ((line = infile.readLine()) != null) {
-//		            line = input+" "+fn+" "+ln;
-//		            inBuffer.append(line);
-//		            inBuffer.append('\n');
-//		        }
-//		        
-//		        while ((line = infile.readLine()) == getLineToDelete(input)) {
-//		        	line = input+" "+fn+" "+ln;
-//		            inBuffer.append(line);
-//		            inBuffer.append('\n');
-//		        }
-//		        infile.close();
-//
-//		        // write the new string with the replaced line OVER the same file
-//		        FileOutputStream fileOut = new FileOutputStream(uri);
-//		        fileOut.write(inBuffer.toString().getBytes());
-//		        fileOut.close();
-//
-//		    } catch (Exception e) {
-//		        System.out.println("Error reading file.");
-//		    }
-//		}
+	
 	
 
 
