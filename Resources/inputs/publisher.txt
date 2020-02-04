@@ -1,6 +1,7 @@
 11  James Nob Publishing
 22  Burr's Publishing
 12  iahhdbdb pubs
+23  Yostile Pubs
 13  Okey's Pubs
 14  harlem pubs
 15  Yangs Publishing
@@ -13,9 +14,7 @@
 3  Corona Publishing Company
 4  Feds Publishers
 6  Akaara Pubs Comp
-7  River Pass Publishing Company
 8  Ath Publishers
 20  Ivy's publishers
 10  Yogi Bear Publishers
 21  Ned Stark Publishing
-23 Yostile Pubs

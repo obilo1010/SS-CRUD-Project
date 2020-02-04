@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -23,15 +24,16 @@ import java.util.stream.Stream;
 public class AuthorServices extends UtilityClass implements Menu  {
 	
 	Main mainMenu = new Main();
+	
 	static String uri = "Resources/inputs/author.txt";
 	static File file = new File(uri);
 	static HashMap<String, String> map = new HashMap<>();
 	
-
 //	public static void main(String[] args) {
-//		AuthorServices m = new AuthorServices();
-////		//m.displayMenu();
-//		m.deleteAuthor(3);
+//		//AuthorServices m = new AuthorServices();
+//		//m.displayMenu();
+//		UtilityClass.getAuthorId("1");
+//		//m.deleteMapIterator(map);
 ////		System.out.println(m.createHashMap(file));
 ////		
 ////		// TODO Auto-generated method stub
@@ -43,10 +45,10 @@ public class AuthorServices extends UtilityClass implements Menu  {
 
 	@Override
 	public void displayMenu() {
-	
+		
 		int action;
-		//HashMap<String, String> pam = 
-		//createHashMap(file);
+		HashMap<String, String> pam = createHashMap(file);
+		deleteMapIterator(pam);
 		Scanner userSelection = new Scanner(System.in);
 		
 		System.out.println("1. Add Author");
@@ -121,30 +123,28 @@ public class AuthorServices extends UtilityClass implements Menu  {
         }
         
         if (action == 3) {
-        	System.out.print("Functionality not ready yet");
-        	displayMenu();
-//        	Scanner n = new Scanner(System.in);
-//        	System.out.println("Enter the key of  the author you want to delete\n"+ "Enter '0' to return to previous menu"+ authorOptions());
-//        	
-//        	String userInput = n.nextLine();
-//    		Integer input = Integer.parseInt(userInput);
-//    		
-//    		if (input == 0) {
-//    			displayMenu();
-//    			
-//    		}
-//    		
-//    		else {
-//    			
-//    			input = read_range(n, 1, mapIterator(map));
-//    			try {
-//					deleteAuthor(getLineToDelete(input));
-//				} catch (IOException e) {
-//					System.out.println("\n");
-//					System.out.println("Something Went Wrong");
-//					displayMenu();
-//				}
-//    		}
+        	
+        	System.out.println("Enter the key of the book you wish to delete\n" + authorOptions());
+        	Scanner n = new Scanner(System.in);
+        	String deleteKey = n.nextLine(); 
+        	Integer keyValue = Integer.parseInt(deleteKey);
+        	
+        	
+        	
+        	try {
+        		keyValue = read_range(n, 1, mapIterator(map));
+        		ArrayList<String > key = UtilityClass.getAuthorId(deleteKey);
+        		
+        		System.out.println(deleteKey);
+        		System.out.println(Arrays.toString(key.toArray()));
+        		
+				deleteAuthor(key);
+				deleteBookAuthor(deleteKey);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("<<<File not found>>>");
+			}
+        	n.close();
         }
         
         if (action == 4) {
@@ -191,17 +191,6 @@ public class AuthorServices extends UtilityClass implements Menu  {
 		return finalString;
 	}
 	
-public int deleteMapIterator(HashMap<String, String> map) {
-		
-		int count = 0;
-		//map.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-		for (String item : map.keySet()) {
-			
-			count += 1;	
-		}
-		return count;
-		
-}
 
 
 public int mapIterator(HashMap<String, String> map) {
@@ -308,131 +297,91 @@ public HashMap<String, String> createHashMap(File file) {
 	}
 	
 
-	public void deleteAuthor(String str) throws IOException {
-		
-		File inputFile = new File("Resources/inputs/author.txt");
-		//System.out.print(inputFile);
-		File tempFile = new File("myTempFile.txt");
-		 
-		BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-		BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-		 
-		String lineToRemove = str;
-		String currentLine;
-		 
-		while((currentLine = reader.readLine()) != null) {
-		 
-		// trim newline when comparing with lineToRemove
-		    String trimmedLine = currentLine.trim();
-		   
-		    if(trimmedLine.equals(lineToRemove)) continue;
-		 
-		    writer.write(currentLine + System.getProperty("line.separator"));
-		    
-		}
-		writer.flush();
-		 
-		writer.close(); 
-		reader.close(); 
-		 
-		tempFile.renameTo(inputFile);
+	public void deleteAuthor(ArrayList<String> id) throws IOException {
+				BookServices bs = new BookServices();
+				for (String item : id) {
+					
+					bs.deleteBook(item);
 	}
-
-	public void editAuthor(String fn, String ln, Integer input) {
-		
-		
-		    try {
-		        // input the (modified) file content to the StringBuffer "input"
-		        BufferedReader infile = new BufferedReader(new FileReader(uri));
-		        StringBuffer inBuffer = new StringBuffer();
-		        String line;
-
-		        while ((line = infile.readLine()) != null) {
-		            line = input+" "+fn+" "+ln;
-		            inBuffer.append(line);
-		            inBuffer.append('\n');
-		        }
-		        
-		        while ((line = infile.readLine()) == getLineToDelete(input)) {
-		        	line = input+" "+fn+" "+ln;
-		            inBuffer.append(line);
-		            inBuffer.append('\n');
-		        }
-		        infile.close();
-
-		        // write the new string with the replaced line OVER the same file
-		        FileOutputStream fileOut = new FileOutputStream(uri);
-		        fileOut.write(inBuffer.toString().getBytes());
-		        fileOut.close();
-
-		    } catch (Exception e) {
-		        System.out.println("Error reading file.");
-		    }
-		}
 	}
+				
+	public void deleteBookAuthor(String id) throws IOException {
+			HashMap<String, String> map = createHashMap(file);
+					map.remove(id);
+					
+				    
+		 File file = new File(uri);
+			        BufferedWriter bufreader = null;;
+			        
+			        try{
+			            
+			            //create new BufferedWriter for the output file
+			            bufreader = new BufferedWriter( new FileWriter(file) );
+			 
+			            //iterate map entries
+			            for(Map.Entry<String, String> entry : map.entrySet()){
+			            	
+			                bufreader.write(entry.getKey() + " " + entry.getValue());
+			                
+			                //new line
+			                bufreader.newLine();
+			            }
+			            
+			            bufreader.flush();
+			 
+			        } catch(IOException e){
+			        	
+			            System.out.println("File not found");
+			            
+			        } finally{
+			        	
+			                bufreader.close();
+			            
+			        }
+			    
+	}	
+				
+					
+				    
+					
+				
+		
+ 
+}
 
-//public void deleteFunction() {
-//BookServices bs = new BookServices();
-//Scanner scan;
-//try {
-//	scan = new Scanner(bs.file);
-//} catch (FileNotFoundException e1) {
-//	// TODO Auto-generated catch block
-//	e1.printStackTrace();
-//}
-//String fileName = "books.txt";
-//String lineToRemove = scan.findInLine(Pattern.compile("........"+getAuthorId()));	
-//try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
-//	stream.filter(line->!line.trim().equals(lineToRemove)).forEach(System.out::println);
-//} catch (IOException e) {
-//	e.printStackTrace();
-//}
-//}
+//	public void editAuthor(String fn, String ln, Integer input) {
+//		
+//		
+//		    try {
+//		        // input the (modified) file content to the StringBuffer "input"
+//		        BufferedReader infile = new BufferedReader(new FileReader(uri));
+//		        StringBuffer inBuffer = new StringBuffer();
+//		        String line;
+//
+//		        while ((line = infile.readLine()) != null) {
+//		            line = input+" "+fn+" "+ln;
+//		            inBuffer.append(line);
+//		            inBuffer.append('\n');
+//		        }
+//		        
+//		        while ((line = infile.readLine()) == getLineToDelete(input)) {
+//		        	line = input+" "+fn+" "+ln;
+//		            inBuffer.append(line);
+//		            inBuffer.append('\n');
+//		        }
+//		        infile.close();
+//
+//		        // write the new string with the replaced line OVER the same file
+//		        FileOutputStream fileOut = new FileOutputStream(uri);
+//		        fileOut.write(inBuffer.toString().getBytes());
+//		        fileOut.close();
+//
+//		    } catch (Exception e) {
+//		        System.out.println("Error reading file.");
+//		    }
+//		}
+	
 
-//public void deleteFunction() {
-//	
-//File tempFile = new File("Resources/inputs/myTempFile.txt");
-//
-//BookServices bs = new BookServices();
-// 
-//BufferedReader reader = new BufferedReader(new FileReader(bs.file));
-//BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-//
-//String ltr = null;
-//
-//try {
-//	Scanner scan = new Scanner(bs.file);
-//	
-//	while(scan.hasNextLine()) {
-//
-//		
-//		ltr = scan.findInLine(Pattern.compile("........"+getAuthorId()+"...."));
-//		
-//		
-//	}
-//} catch (FileNotFoundException e) {
-//	// TODO Auto-generated catch block
-//	e.printStackTrace();
-//}
-// 
-//String lineToRemove = ltr;
-//String currentLine;
-// 
-//while((currentLine = reader.readLine()) != null) {
-// 
-//// trim newline when comparing with lineToRemove
-//    String trimmedLine = currentLine.trim();
-//   
-//    if(trimmedLine.equals(lineToRemove)) continue;
-// 
-//    writer.write(currentLine + System.getProperty("line.separator"));
-//}
-// 
-//writer.close(); 
-//reader.close(); 
-// 
-//boolean successful = tempFile.renameTo(bs.file);			
-//}
 
 
 

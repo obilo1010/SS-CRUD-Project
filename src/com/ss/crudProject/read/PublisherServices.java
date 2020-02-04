@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,14 +49,6 @@ public class PublisherServices extends UtilityClass implements Menu {
         
         if (action == 1) {
         	
-//        	Scanner n = new Scanner(System.in);
-//        	
-//        	System.out.println("Enter Publisher's Name");
-//        	String pubName = n.nextLine();
-//        	
-//        	addPublisher(pubName);
-//        	n.close();
-        	
         	Scanner n = new Scanner(System.in);
         	
         	System.out.println("If the Publisher is on this list, please enter the publisher's key\n" +"Enter '0' if your author is not shown \n" + publisherOptions());
@@ -86,31 +79,23 @@ public class PublisherServices extends UtilityClass implements Menu {
         }
         
         if (action == 3) {
-//        	System.out.println("Functionality not ready yet");
-//        	displayMenu();
+        	BookServices bs = new BookServices();
+        	System.out.println("Enter the key of the book you wish to delete\n" + publisherOptions());
+        	Scanner n = new Scanner(System.in);
+        	String deleteKey = n.nextLine();
+        	Integer keyValue = Integer.parseInt(deleteKey);
         	
-         	Scanner n = new Scanner(System.in);
-        	System.out.println("Enter the key of  the publisher you want to delete\n"+ "Enter '0' to return to previous menu"+ publisherOptions());
-        	
-        	String userInput = n.nextLine();
-    		Integer input = Integer.parseInt(userInput);
-    		
-    		if (input == 0) {
-    			displayMenu();
-    			
-    		}
-    		
-    		else {
-    			
-    			input = read_range(n, 1, mapIterator(map));
-    			try {
-					deletePublisher(getLineToDelete(input));
-				} catch (IOException e) {
-					System.out.println("\n");
-					System.out.println("Something Went Wrong");
-					displayMenu();
-				}
-    		}
+        	try {
+        		keyValue = read_range(n, 1, mapIterator(map));
+        		ArrayList<String > key = UtilityClass.getPubId(deleteKey);
+        		
+				deletePublisher(key);
+				deleteBookPublisher(deleteKey);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("<<<File not found>>>");
+			}
+        	n.close();
         }
         
         if (action == 4) {
@@ -250,14 +235,19 @@ public int mapIterator(HashMap<String, String> map) {
 		  }
 		}
 	
-	public void deletePublisher(String id) throws IOException {
+	public void deletePublisher(ArrayList<String> id) throws IOException {
+	
+		BookServices bs = new BookServices();
+		for (String item : id) {
+			
+			bs.deleteBook(item);
+	}
+}
+	
+	public void deleteBookPublisher(String id) throws IOException {
 		HashMap<String, String> map = createHashMap(file);
-		System.out.println(map);
 		map.remove(id);
-		System.out.println(map);
 		
-//		FileWriter fstream = new FileWriter(uri);
-//	    BufferedWriter out = new BufferedWriter(fstream);
 	    
  File file = new File(uri);
         BufferedWriter bufreader = null;;
