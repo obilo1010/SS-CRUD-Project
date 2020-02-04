@@ -61,6 +61,27 @@ public abstract class UtilityClass {
 		
 	}
 	
+	protected static HashMap<String,String> getAuthorIdForEdit(String n, String m) {
+		AuthorServices as = new AuthorServices();
+		BookServices bs = new BookServices();
+		HashMap<String, String> map = bs.createHashMap2(as.file);
+		String[] strs = new String[as.deleteMapIterator(map)];
+		
+		for (String item : map.keySet()) {
+			
+			Integer key = Integer.parseInt(item);
+			Integer value = Integer.parseInt(m);
+			
+			
+			if (key == value) {
+				map.replace(item, n);  
+			}
+		
+	}
+		System.out.println("<<"+map+">>");
+		return map;
+}
+	
 	protected static ArrayList<String> getAuthorId(String n) {
 	
 		BookServices bs = new BookServices();

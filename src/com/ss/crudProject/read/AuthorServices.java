@@ -95,6 +95,7 @@ public class AuthorServices extends UtilityClass implements Menu  {
         if (action == 2) {
         	
         	
+        	
         	System.out.println("Enter the key of  the author you want to edit\n"+ "Enter '0' to return to previous menu"+ authorOptions());
         	Scanner n = new Scanner(System.in);
         	String userInput = n.nextLine();
@@ -109,13 +110,26 @@ public class AuthorServices extends UtilityClass implements Menu  {
     			
     			input = read_range(n, 1, mapIterator(map));
     			
-    			String firstName = getUpdatedFirstName();
+    			System.out.println("Enter Author's First Name");
+            	String firstName = n.nextLine();
             	
-            	String lastName = getUpdatedLastName();
+            	System.out.println("Enter Author's Last Name");
+            	String lastName = n.nextLine();
             	
-            	String str2del = getLineToEdit(input);
+            	//String str2del = getLineToEdit(input);
+            	Integer.toString(input);
+            	String edit = firstName+" "+lastName;
+            	HashMap<String, String> map = getAuthorIdForEdit(edit, Integer.toString(input));
             	
-            	editAuthor(firstName, lastName, str2del);
+            	System.out.print(">>"+map+"<<");
+            	
+            	
+            	try {
+					editAuthor(map);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Something Went Wrong");
+				}
     		}
         	
         	
@@ -133,9 +147,6 @@ public class AuthorServices extends UtilityClass implements Menu  {
         	try {
         		keyValue = read_range(n, 1, mapIterator(map));
         		ArrayList<String > key = UtilityClass.getAuthorId(deleteKey);
-        		
-        		System.out.println(deleteKey);
-        		System.out.println(Arrays.toString(key.toArray()));
         		
 				deleteAuthor(key);
 				deleteBookAuthor(deleteKey);
@@ -157,21 +168,23 @@ public class AuthorServices extends UtilityClass implements Menu  {
         }
 	}
 	
-	public String getUpdatedFirstName() {
-		Scanner n = new Scanner(System.in);
-		System.out.print("Enter Author's First Name");
-    	String firstName = n.nextLine();
-    	n.close();
-    	return firstName;
-	}
-	
-	public String getUpdatedLastName() {
-		Scanner n = new Scanner(System.in);
-		System.out.print("Enter Author's First Name");
-    	String lastName = n.nextLine();
-    	n.close();
-    	return lastName;
-	}
+//	public String getUpdatedFirstName() {
+//		Scanner n = new Scanner(System.in);
+//		System.out.print("Enter Author's First Name");
+//    	String firstName = n.nextLine();
+//    	n.close();
+//    	
+//    	return firstName;
+//    	
+//	}
+//	
+//	public String getUpdatedLastName() {
+//		Scanner n = new Scanner(System.in);
+//		System.out.print("Enter Author's First Name");
+//    	String lastName = n.nextLine();
+//    	n.close();
+//    	return lastName;
+//	}
 	
 	public String authorOptions() {
 		createHashMap(file);
@@ -342,9 +355,37 @@ public HashMap<String, String> createHashMap(File file) {
 				
 					
 				    
-	public void editAuthor(String fn, String ln, String del) {
+	public void editAuthor(HashMap<String, String> map) throws IOException {
 		
-
+		 File file = new File(uri);
+	        BufferedWriter bufreader = null;;
+	        
+	        try{
+	            
+	            //create new BufferedWriter for the output file
+	            bufreader = new BufferedWriter( new FileWriter(file) );
+	 
+	            //iterate map entries
+	            for(Map.Entry<String, String> entry : map.entrySet()){
+	            	
+	                bufreader.write(entry.getKey() + " " + entry.getValue());
+	                
+	                //new line
+	                bufreader.newLine();
+	            }
+	            
+	            bufreader.flush();
+	 
+	        } catch(IOException e){
+	        	
+	            System.out.println("File not found");
+	            
+	        } finally{
+	        	
+	                bufreader.close();
+	            
+	        }
+		
 	}				
 				
 		
