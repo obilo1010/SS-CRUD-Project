@@ -24,12 +24,12 @@ public class BookServices extends UtilityClass implements Menu{
 	static File file = new File(uri);
 	static HashMap<String, String> map = new HashMap<>();
 	
-//	public static void main(String[] args) {
-//		BookServices bs = new BookServices();
-//		//bs.displayMenu();
-//		bs.readBooks();
-//		//System.out.println(bs.createHashMap(file));
-//	}
+	public static void main(String[] args) throws IOException {
+		BookServices bs = new BookServices();
+		//bs.displayMenu();
+		bs.deleteBook("3");
+		//System.out.println(bs.createHashMap(file));
+	}
 	
 	@Override
 	public void displayMenu() {
@@ -64,9 +64,6 @@ public class BookServices extends UtilityClass implements Menu{
             	String author = getAuthor();
             	
             	String publisher = getPublisher();
-            	
-            	System.out.println(author);
-            	System.out.println(publisher);
             	
             	addBook(bookTitle, author, publisher);
             			
@@ -243,6 +240,39 @@ public HashMap<String, String> createHashMap(File file) {
 		
 		return map;
 	}
+
+public HashMap<String, String> createHashMap2(File file) {
+	
+	try {
+		Scanner scan = new Scanner(file);
+		
+		while(scan.hasNextLine()) {
+			
+			String data = scan.nextLine();
+			String[] strs = data.split("\\s+");
+			StringBuilder strBuilder = new StringBuilder();
+			
+				for (int i = 1; i<strs.length; i++) {
+					
+						
+					 strBuilder = strBuilder.append(" "+strs[i]);							// consider if you had a third part of the publishers name.
+				
+			
+			}
+			map.put(strs[0], strBuilder.toString());
+			System.out.println(map);
+			
+		}
+		scan.close();
+		
+		System.out.println(map);
+	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return map;
+}
 	
 public String getAuthor() {
 	Scanner n = new Scanner(System.in);
@@ -334,61 +364,101 @@ public String getPublisher() {
 		  }
 	}
 	
-	public void deleteBook(Integer key) {
-		try {
-			
-			Scanner scan = new Scanner(file);
-			File bookFile = new File(uri);
-			String str = "";
-			
-			File tempFile = new File("myTempFile.txt");
-			//StringBuilder strBuilder = new StringBuilder();
-			while(scan.hasNextLine()) {
-				
-				String data = scan.nextLine();
-				StringBuilder strBuilder = new StringBuilder();
-				String[] strs = data.split("\\s+");
-				
-				System.out.println(Arrays.toString(strs));
-					for (int i = 0; i<strs.length; i++) {
-						Integer b = Integer.parseInt(strs[strs.length-2]);
-						if (b != key) {
-							strBuilder = strBuilder.append(strs[i]+ " ");
-						}
-						
-						if (b==key) {
-							continue;
-						}
-						
+//	public void deleteBook(Integer key) {
+//		try {
+//			
+//			Scanner scan = new Scanner(file);
+//			File bookFile = new File(uri);
+//			String str = "";
+//			
+//			File tempFile = new File("myTempFile.txt");
+//			//StringBuilder strBuilder = new StringBuilder();
+//			while(scan.hasNextLine()) {
+//				
+//				String data = scan.nextLine();
+//				StringBuilder strBuilder = new StringBuilder();
+//				String[] strs = data.split("\\s+");
+//				
+//				System.out.println(Arrays.toString(strs));
+//					for (int i = 0; i<strs.length; i++) {
+//						Integer b = Integer.parseInt(strs[strs.length-2]);
+//						if (b != key) {
+//							strBuilder = strBuilder.append(strs[i]+ " ");
+//						}
+//						
+//						if (b==key) {
+//							continue;
+//						}
+//						
+//	
+//				}
+//				
+//					str += strBuilder.toString()+"\n";
+//					
+//					
+//					try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+//						
+//						writer.write(str);
+//						writer.newLine();
+//						//writer.flush();
+//						
+//					}  catch (IOException e) {
+//						System.out.println("File Not Found");
+//					}
+//			
+//			}
+//			
+//			tempFile.renameTo(bookFile);
+//			System.out.println(str);
+//			scan.close();
+//			
+//		} catch (FileNotFoundException e) {
+//			
+//			System.out.println("File Not Found");
+//		}
+//	
+//	
+//		
+//	}
 	
-				}
-				
-					str += strBuilder.toString()+"\n";
-					
-					
-					try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-						
-						writer.write(str);
-						writer.newLine();
-						//writer.flush();
-						
-					}  catch (IOException e) {
-						System.out.println("File Not Found");
-					}
-			
-			}
-			
-			tempFile.renameTo(bookFile);
-			System.out.println(str);
-			scan.close();
-			
-		} catch (FileNotFoundException e) {
-			
-			System.out.println("File Not Found");
-		}
-	
-	
+	public void deleteBook(String id) throws IOException {
+		HashMap<String, String> map = createHashMap2(file);
+		System.out.println(map);
+		map.remove(id);
+		System.out.println(map);
 		
+//		FileWriter fstream = new FileWriter(uri);
+//	    BufferedWriter out = new BufferedWriter(fstream);
+	    
+ File file = new File(uri);
+        BufferedWriter bufreader = null;;
+        
+        try{
+            
+            //create new BufferedWriter for the output file
+            bufreader = new BufferedWriter( new FileWriter(file) );
+ 
+            //iterate map entries
+            for(Map.Entry<String, String> entry : map.entrySet()){
+            	
+                bufreader.write(entry.getKey() + " " + entry.getValue());
+                
+                //new line
+                bufreader.newLine();
+            }
+            
+            bufreader.flush();
+ 
+        } catch(IOException e){
+        	
+            System.out.println("File not found");
+            
+        } finally{
+        	
+                bufreader.close();
+            
+        }
+    
 	}
 }
 

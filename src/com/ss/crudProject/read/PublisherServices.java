@@ -21,10 +21,11 @@ public class PublisherServices extends UtilityClass implements Menu {
 	static File file = new File(uri);
 	static HashMap<String, String> map = new HashMap<>();
 	
-//	public static void main(String[] args) {
+//	public static void main(String[] args) throws IOException {
 //		PublisherServices ps = new PublisherServices();
 ////		ps.displayMenu();
 //		//ps.createHashMap(file);
+//		ps.deletePublisher("9");
 //	}
 
 	@Override
