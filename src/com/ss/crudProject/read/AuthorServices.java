@@ -94,9 +94,9 @@ public class AuthorServices extends UtilityClass implements Menu  {
         
         if (action == 2) {
         	
-        	Scanner n = new Scanner(System.in);
-        	System.out.println("Enter the key of  the author you want to edit\n"+ "Enter '0' to return to previous menu"+ authorOptions());
         	
+        	System.out.println("Enter the key of  the author you want to edit\n"+ "Enter '0' to return to previous menu"+ authorOptions());
+        	Scanner n = new Scanner(System.in);
         	String userInput = n.nextLine();
     		Integer input = Integer.parseInt(userInput);
     		
@@ -113,7 +113,9 @@ public class AuthorServices extends UtilityClass implements Menu  {
             	
             	String lastName = getUpdatedLastName();
             	
-            	editAuthor(firstName, lastName, input);
+            	String str2del = getLineToEdit(input);
+            	
+            	editAuthor(firstName, lastName, str2del);
     		}
         	
         	
@@ -340,7 +342,7 @@ public HashMap<String, String> createHashMap(File file) {
 				
 					
 				    
-	public void editAuthor(String fn, String ln, Integer input) {
+	public void editAuthor(String fn, String ln, String del) {
 		
 
 	}				
