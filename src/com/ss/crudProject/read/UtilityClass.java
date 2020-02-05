@@ -61,6 +61,25 @@ public abstract class UtilityClass {
 		
 	}
 	
+	protected static HashMap<String,String> getPubIdForEdit(String n, String m) {
+		PublisherServices ps = new PublisherServices();
+		BookServices bs = new BookServices();
+		HashMap<String, String> map = bs.createHashMap2(ps.file);
+		String[] strs = new String[ps.deleteMapIterator(map)];
+		
+		for (String item : map.keySet()) {
+			
+			Integer key = Integer.parseInt(item);
+			Integer value = Integer.parseInt(m);
+			
+			
+			if (key == value) {
+				map.replace(item, n);  
+			}
+		
+	}
+		return map;
+}
 	protected static HashMap<String,String> getAuthorIdForEdit(String n, String m) {
 		AuthorServices as = new AuthorServices();
 		BookServices bs = new BookServices();
@@ -193,41 +212,41 @@ protected HashMap<String, String> createBookHashMap(File file) {
 		
 		return map;
 	}
-
-public static String getLineToEdit(Integer input) {
-	AuthorServices as = new AuthorServices();
-	String str = null;
-	try {
-		Scanner s = new Scanner(as.file);
-		
-		StringBuilder strBuilder = new StringBuilder();
-		
-		while (s.hasNextLine()) {
-			String data = s.nextLine();
-			String[] strs = data.split("\\s+");
-			Integer id = Integer.parseInt(strs[0]);
-			for (int i = 0; i< strs.length; i++) {
-				
-				if (id == input) {
-					strBuilder = strBuilder.append(strs[i]+ " ");
-				}
-			}
-		}
-		
-		
-		str = strBuilder.toString();
-		System.out.println(str);
-		s.close();
-		
-		
-	} catch (FileNotFoundException e) {
-		System.out.println("File Not Found");
-		as.displayMenu();
-	
-}
-	return str;
-
-}
+//
+//public static String getLineToEdit(Integer input) {
+//	AuthorServices as = new AuthorServices();
+//	String str = null;
+//	try {
+//		Scanner s = new Scanner(as.file);
+//		
+//		StringBuilder strBuilder = new StringBuilder();
+//		
+//		while (s.hasNextLine()) {
+//			String data = s.nextLine();
+//			String[] strs = data.split("\\s+");
+//			Integer id = Integer.parseInt(strs[0]);
+//			for (int i = 0; i< strs.length; i++) {
+//				
+//				if (id == input) {
+//					strBuilder = strBuilder.append(strs[i]+ " ");
+//				}
+//			}
+//		}
+//		
+//		
+//		str = strBuilder.toString();
+//		System.out.println(str);
+//		s.close();
+//		
+//		
+//	} catch (FileNotFoundException e) {
+//		System.out.println("File Not Found");
+//		as.displayMenu();
+//	
+//}
+//	return str;
+//
+//}
 }
 
 

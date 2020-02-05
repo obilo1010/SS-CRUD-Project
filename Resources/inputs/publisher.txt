@@ -1,8 +1,8 @@
-11  James Nob Publishing
 22  Burr's Publishing
 12  iahhdbdb pubs
 23  Yostile Pubs
-13  Okey's Pubs
+13  Has not Pubs
+24  Ulyhiu Publishing
 14  harlem pubs
 15  Yangs Publishing
 16  Force Jedi Publishers
@@ -11,10 +11,9 @@
 19  Basheba pubs
 1  Obi's Publishing
 2  Uche's Publishing
-3  Corona Publishing Company
-4  Feds Publishers
-6  Akaara Pubs Comp
-8  Ath Publishers
+3  Krazy8 Publishing
+4  Jassd Pubs
+8  Freedom Publishers
 20  Ivy's publishers
-10  Yogi Bear Publishers
+10  Yamaha Publishing
 21  Ned Stark Publishing

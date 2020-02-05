@@ -24,12 +24,12 @@ public class BookServices extends UtilityClass implements Menu{
 	static File file = new File(uri);
 	static HashMap<String, String> map = new HashMap<>();
 	
-	public static void main(String[] args) throws IOException {
-		BookServices bs = new BookServices();
-		//bs.displayMenu();
-		bs.deleteBook("3");
-		//System.out.println(bs.createHashMap(file));
-	}
+//	public static void main(String[] args) throws IOException {
+//		BookServices bs = new BookServices();
+//		//bs.displayMenu();
+//		//bs.deleteBook("3");
+//		//System.out.println(bs.createHashMap(file));
+//	}
 	
 	@Override
 	public void displayMenu() {
@@ -401,6 +401,10 @@ public String getPublisher() {
             
         }
     
+	}
+	
+	public void editBook() {
+		
 	}
 }
 

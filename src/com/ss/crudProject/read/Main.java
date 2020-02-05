@@ -50,6 +50,8 @@ public class Main extends UtilityClass implements Menu {
         	
         }
         
+        userSelection.close();
+        
 	}
 
 

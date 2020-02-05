@@ -22,6 +22,7 @@ public class PublisherServices extends UtilityClass implements Menu {
 	static File file = new File(uri);
 	static HashMap<String, String> map = new HashMap<>();
 	
+	
 //	public static void main(String[] args) throws IOException {
 //		PublisherServices ps = new PublisherServices();
 ////		ps.displayMenu();
@@ -34,7 +35,8 @@ public class PublisherServices extends UtilityClass implements Menu {
 		
 		int action;
 		
-		//createHashMap(file);
+		HashMap<String, String> map = createHashMap(file);
+		System.out.println(map);
 		
 		Scanner userSelection = new Scanner(System.in);
 		
@@ -51,7 +53,7 @@ public class PublisherServices extends UtilityClass implements Menu {
         	
         	Scanner n = new Scanner(System.in);
         	
-        	System.out.println("If the Publisher is on this list, please enter the publisher's key\n" +"Enter '0' if your author is not shown \n" + publisherOptions());
+        	System.out.println("If the Publisher is on this list, please enter the publisher's key\n" +"Enter '0' if your author is not shown\n" + publisherOptions());
     		
         	String userInput = n.nextLine();
     		Integer input = Integer.parseInt(userInput);
@@ -73,9 +75,39 @@ public class PublisherServices extends UtilityClass implements Menu {
         
         if (action == 2) {
         	
+          	
+        	System.out.println("Enter the key of  the Publisher you want to edit\n"+ "Enter '0' to return to previous menu\n"+ publisherOptions());
+        	Scanner n = new Scanner(System.in);
+        	String userInput = n.nextLine();
+    		Integer input = Integer.parseInt(userInput);
+    		
+    		if (input == 0) {
+    			displayMenu();
+    			
+    		}
+    		
+    		else {
+    			System.out.print(">>"+map+"<<");
+    			input = read_range(n, 1, mapIterator(map));
+    			
+    			String pubName = getNewPubName();
+            	
+            	//String updatedPublisherName = pubName;
+            	HashMap<String, String> pubmap = getPubIdForEdit(pubName, Integer.toString(input));
+ 
+            	
+            	
+            	
+					try {
+						editPublisher(pubmap);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+    		
+    		}
         	
-        	System.out.print("Functionality not ready yet");
-        	displayMenu();
         }
         
         if (action == 3) {
@@ -111,6 +143,13 @@ public class PublisherServices extends UtilityClass implements Menu {
 		
 	}
 	
+	public String getNewPubName() {
+		Scanner n = new Scanner(System.in);
+		System.out.println("Enter Publishers Name");
+    	String pubName = n.nextLine();
+    	return pubName;
+	}
+	
 public int mapIterator(HashMap<String, String> map) {
 		
 		
@@ -118,8 +157,8 @@ public int mapIterator(HashMap<String, String> map) {
 		//map.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
 		for (String item : map.keySet()) {
 			
-			Integer key = Integer.parseInt(item);
-			list.add(key);
+			Integer ky = Integer.parseInt(item);
+			list.add(ky);
 			
 		}
 		Collections.sort(list);
@@ -278,6 +317,37 @@ public int mapIterator(HashMap<String, String> map) {
             
         }
     
+	}
+	
+	public void editPublisher(HashMap<String, String> map) throws IOException {
+		 File file = new File(uri);
+	        BufferedWriter bufreader = null;;
+	        
+	        try{
+	            
+	            //create new BufferedWriter for the output file
+	            bufreader = new BufferedWriter( new FileWriter(file) );
+	 
+	            //iterate map entries
+	            for(Map.Entry<String, String> entry : map.entrySet()){
+	            	
+	                bufreader.write(entry.getKey() + " " + entry.getValue());
+	                
+	                //new line
+	                bufreader.newLine();
+	            }
+	            
+	            bufreader.flush();
+	 
+	        } catch(IOException e){
+	        	
+	            System.out.println("File not found");
+	            
+	        } finally{
+	        	
+	                bufreader.close();
+	            
+	        }
 	}
 		
 }

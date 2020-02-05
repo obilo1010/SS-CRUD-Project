@@ -41,8 +41,6 @@ public class AuthorServices extends UtilityClass implements Menu  {
 //	}
 	
 	
-	
-
 	@Override
 	public void displayMenu() {
 		
@@ -121,8 +119,6 @@ public class AuthorServices extends UtilityClass implements Menu  {
             	String edit = firstName+" "+lastName;
             	HashMap<String, String> map = getAuthorIdForEdit(edit, Integer.toString(input));
             	
-            	System.out.print(">>"+map+"<<");
-            	
             	
             	try {
 					editAuthor(map);
@@ -132,7 +128,7 @@ public class AuthorServices extends UtilityClass implements Menu  {
 				}
     		}
         	
-        	
+    		n.close();
         }
         
         if (action == 3) {
@@ -155,6 +151,7 @@ public class AuthorServices extends UtilityClass implements Menu  {
 				System.out.println("<<<File not found>>>");
 			}
         	n.close();
+        	//mainMenu.displayMenu();
         }
         
         if (action == 4) {
