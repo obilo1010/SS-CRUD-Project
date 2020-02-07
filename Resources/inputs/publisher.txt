@@ -4,8 +4,11 @@
 13  Has not Pubs
 24  Ulyhiu Publishing
 14  harlem pubs
+25  Unified Pubs
 15  Yangs Publishing
+26  3on3 Pubs
 16  Force Jedi Publishers
+27  Ugo Publishing
 17  Toms Publishing
 18  Types Pubs
 19  Basheba pubs
@@ -13,7 +16,4 @@
 2  Uche's Publishing
 3  Krazy8 Publishing
 4  Jassd Pubs
-8  Freedom Publishers
-20  Ivy's publishers
 10  Yamaha Publishing
-21  Ned Stark Publishing

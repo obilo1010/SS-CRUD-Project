@@ -71,12 +71,12 @@ public class AuthorServices extends UtilityClass implements Menu  {
     			System.out.println("Enter Author's First Name");
             	String firstName = n.nextLine();
             	
+            	
             	System.out.println("Enter Author's Last Name");
             	String lastName = n.nextLine();
             	
-            	addAuthor(firstName, lastName);
-//            	System.out.println("\n");
-//            	displayMenu();
+            	
+            	addAuthor(firstName, lastName);          	
     			
     		}
     		else {
@@ -85,8 +85,18 @@ public class AuthorServices extends UtilityClass implements Menu  {
     		}
         	
         	
-        	
-        	n.close();
+    		System.out.println("Enter '0' to return to Main Menu");
+    		n = new Scanner(System.in);
+    		String option = n.nextLine();
+    		Integer intoption = Integer.parseInt(option);
+    		
+    		if (intoption == 0) {
+    			mainMenu.displayMenu();
+    		}
+    		else if (intoption > 0) {
+    			intoption = read_rangee(n, 0);
+    			mainMenu.displayMenu();
+    			}
         	
         }
         
@@ -94,7 +104,7 @@ public class AuthorServices extends UtilityClass implements Menu  {
         	
         	
         	
-        	System.out.println("Enter the key of  the author you want to edit\n"+ "Enter '0' to return to previous menu"+ authorOptions());
+        	System.out.println("Enter the key of  the author you want to edit\n"+ "Enter '0' to return to previous menu\n"+ authorOptions());
         	Scanner n = new Scanner(System.in);
         	String userInput = n.nextLine();
     		Integer input = Integer.parseInt(userInput);
@@ -107,33 +117,33 @@ public class AuthorServices extends UtilityClass implements Menu  {
     		else {
     			
     			input = read_range(n, 1, mapIterator(map));
-    			
-    			System.out.println("Enter Author's First Name");
-            	String firstName = n.nextLine();
             	
-            	System.out.println("Enter Author's Last Name");
-            	String lastName = n.nextLine();
+    			String fullName = getFullName();
             	
-            	//String str2del = getLineToEdit(input);
             	Integer.toString(input);
-            	String edit = firstName+" "+lastName;
+            	String edit = fullName;
             	HashMap<String, String> map = getAuthorIdForEdit(edit, Integer.toString(input));
             	
             	
             	try {
 					editAuthor(map);
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					System.out.println("Something Went Wrong");
 				}
+            	
+            	
+            	
+            	
     		}
+    		
         	
-    		n.close();
         }
         
         if (action == 3) {
         	
-        	System.out.println("Enter the key of the book you wish to delete\n" + authorOptions());
+        	System.out.println("Enter the key of the author you wish to delete\n" + authorOptions());
         	Scanner n = new Scanner(System.in);
         	String deleteKey = n.nextLine(); 
         	Integer keyValue = Integer.parseInt(deleteKey);
@@ -163,6 +173,19 @@ public class AuthorServices extends UtilityClass implements Menu  {
 //        	Main mainMenu = new Main(); // Should i leave this here or instantiate at the top.
         	mainMenu.displayMenu();
         }
+        //displayMenu();
+	}
+	
+	public String getFullName() {
+		Scanner n = new Scanner(System.in);
+		String fullName;
+		System.out.println("Enter Author's Full Name");
+		Integer name = n.nextInt();
+		n.nextLine();
+		
+    	 fullName = Integer.toString(name);
+		//String fullName = Integer.toString(num);
+    	return fullName;
 	}
 	
 //	public String getUpdatedFirstName() {
@@ -200,23 +223,6 @@ public class AuthorServices extends UtilityClass implements Menu  {
 		return finalString;
 	}
 	
-
-
-public int mapIterator(HashMap<String, String> map) {
-		
-		
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		//map.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-		for (String item : map.keySet()) {
-			
-			Integer key = Integer.parseInt(item);
-			list.add(key);
-			
-		}
-		Collections.sort(list);
-		return list.get(list.size()-1);
-		
-}
 
 public HashMap<String, String> createHashMap(File file) {
 		
@@ -260,7 +266,9 @@ public HashMap<String, String> createHashMap(File file) {
 			writer.write(data);
 			writer.newLine();
 			
-			System.out.println(firstName+" "+lastName+" has been added");
+			System.out.println("\n"+firstName+" "+lastName+" has been added");
+			
+			
 			
 			
 		} catch(IOException e) {
@@ -269,6 +277,8 @@ public HashMap<String, String> createHashMap(File file) {
 			displayMenu();
 			
 		}
+		
+		System.out.println("\n");
 				
 	}
 	
@@ -345,6 +355,9 @@ public HashMap<String, String> createHashMap(File file) {
 			        } finally{
 			        	
 			                bufreader.close();
+			                
+			                System.out.println("\n");
+			            	//displayMenu();
 			            
 			        }
 			    
@@ -372,6 +385,9 @@ public HashMap<String, String> createHashMap(File file) {
 	            }
 	            
 	            bufreader.flush();
+	            System.out.println("\n Author has been edited");
+	            
+	            
 	 
 	        } catch(IOException e){
 	        	
@@ -380,7 +396,7 @@ public HashMap<String, String> createHashMap(File file) {
 	        } finally{
 	        	
 	                bufreader.close();
-	            
+	            displayMenu();
 	        }
 		
 	}				

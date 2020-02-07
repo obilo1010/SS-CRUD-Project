@@ -35,8 +35,7 @@ public class PublisherServices extends UtilityClass implements Menu {
 		
 		int action;
 		
-		HashMap<String, String> map = createHashMap(file);
-		System.out.println(map);
+		//HashMap<String, String> map = createHashMap(file);
 		
 		Scanner userSelection = new Scanner(System.in);
 		
@@ -67,6 +66,7 @@ public class PublisherServices extends UtilityClass implements Menu {
     			
     		}
     		else {
+    			// remember you moved the mapiterator function to utility class
     			input = read_range(n, 1, mapIterator(map));
     			System.out.println("Thanks, Publisher Already Exists");
     		}
@@ -87,7 +87,6 @@ public class PublisherServices extends UtilityClass implements Menu {
     		}
     		
     		else {
-    			System.out.print(">>"+map+"<<");
     			input = read_range(n, 1, mapIterator(map));
     			
     			String pubName = getNewPubName();
@@ -101,12 +100,24 @@ public class PublisherServices extends UtilityClass implements Menu {
 					try {
 						editPublisher(pubmap);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Somthing Went Wrong");
 					}
 				
     		
     		}
+    		
+    		System.out.println("Enter '0' to return to Main Menu");
+    		n = new Scanner(System.in);
+    		String option = n.nextLine();
+    		Integer intoption = Integer.parseInt(option);
+    		
+    		if (intoption == 0) {
+    			mainMenu.displayMenu();
+    		}
+    		else if (intoption > 0) {
+    			intoption = read_rangee(n, 0);
+    			mainMenu.displayMenu();
+    			}
         	
         }
         
@@ -127,12 +138,35 @@ public class PublisherServices extends UtilityClass implements Menu {
 				// TODO Auto-generated catch block
 				System.out.println("<<<File not found>>>");
 			}
-        	n.close();
+        	System.out.println("Enter '0' to return to Main Menu");
+    		n = new Scanner(System.in);
+    		String option = n.nextLine();
+    		Integer intoption = Integer.parseInt(option);
+    		
+    		if (intoption == 0) {
+    			mainMenu.displayMenu();
+    		}
+    		else if (intoption > 0) {
+    			intoption = read_rangee(n, 0);
+    			mainMenu.displayMenu();
+    			}
         }
         
         if (action == 4) {
         	
         	viewAllPublishers();
+        	System.out.println("Enter '0' to return to Main Menu");
+    		Scanner n = new Scanner(System.in);
+    		String option = n.nextLine();
+    		Integer intoption = Integer.parseInt(option);
+    		
+    		if (intoption == 0) {
+    			mainMenu.displayMenu();
+    		}
+    		else if (intoption > 0) {
+    			intoption = read_rangee(n, 0);
+    			mainMenu.displayMenu();
+    			}
         }
         
         if (action == 5) {
@@ -150,21 +184,7 @@ public class PublisherServices extends UtilityClass implements Menu {
     	return pubName;
 	}
 	
-public int mapIterator(HashMap<String, String> map) {
-		
-		
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		//map.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-		for (String item : map.keySet()) {
-			
-			Integer ky = Integer.parseInt(item);
-			list.add(ky);
-			
-		}
-		Collections.sort(list);
-		return list.get(list.size()-1);
-		
-}
+
 	
 	public String  publisherOptions() {
 		
@@ -325,15 +345,14 @@ public int mapIterator(HashMap<String, String> map) {
 	        
 	        try{
 	            
-	            //create new BufferedWriter for the output file
+	           
 	            bufreader = new BufferedWriter( new FileWriter(file) );
 	 
-	            //iterate map entries
+	         
 	            for(Map.Entry<String, String> entry : map.entrySet()){
 	            	
 	                bufreader.write(entry.getKey() + " " + entry.getValue());
-	                
-	                //new line
+	              
 	                bufreader.newLine();
 	            }
 	            
@@ -346,6 +365,7 @@ public int mapIterator(HashMap<String, String> map) {
 	        } finally{
 	        	
 	                bufreader.close();
+	               
 	            
 	        }
 	}

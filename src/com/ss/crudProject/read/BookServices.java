@@ -66,26 +66,76 @@ public class BookServices extends UtilityClass implements Menu{
             	String publisher = getPublisher();
             	
             	addBook(bookTitle, author, publisher);
+            	
+            	
+            	System.out.println("Enter '0' to return to Main Menu");
+//            	n = new Scanner(System.in);
+    			String option = n.nextLine();
+    			Integer intoption = Integer.parseInt(option);
+    			
+    			if (intoption == 0) {
+    				mainMenu.displayMenu();
+    			}
+    			else if (intoption > 0) {
+    				intoption = read_rangee(n, 0);
+    				mainMenu.displayMenu();
+    				}
+    			
+    			n.close();
             			
             } else {
-            	input = read_range(n, 1, bookMapIterator(map));
+            	input = read_range(n, 1, mapIterator(map));
             	System.out.print("\n");
             	System.out.println("Book already exists");
             	
             }
-            	
         	
         	
-        	//n.close();
-        	
-       
         }
         
         if (action == 2) {
         	
-        	System.out.print("Functionality not ready yet");
-        	System.out.print("\n");
-        	//displayMenu();
+
+        	System.out.println("Enter the key of the book you want to edit\n"+ "Enter '0' to return to previous menu\n"+ bookOptions());
+        	Scanner n = new Scanner(System.in);
+        	String userInput = n.nextLine();
+    		Integer input = Integer.parseInt(userInput);
+    		
+    		if (input == 0) {
+    			displayMenu();
+    			
+    		}
+    		
+    		else {
+    			
+    			input = read_range(n, 1, mapIterator(map));
+    			
+    			String booksNewTitle = getBooksNewTitle();
+    			
+    			
+            	
+            	String authorUpdate = getAuthorForEdit();
+            	
+            	String publisherUpdate = getPublisherForEdit();
+            	String key  = Integer.toString(input);
+            	
+            	String value = booksNewTitle+" "+authorUpdate+" "+publisherUpdate;
+            	
+            	
+            	
+            	try {
+					editBook(key, value);
+			
+				} catch (IOException e) {
+					System.out.println("Something Went Wrong");
+				}
+    		}
+        	
+    		
+    		
+			
+    		
+    		
         }
         
         if (action == 3) {
@@ -121,6 +171,15 @@ public class BookServices extends UtilityClass implements Menu{
 		
 	}
 	
+	public String getBooksNewTitle() {
+		Scanner n = new Scanner(System.in);
+		System.out.println("Enter Book New Title");
+    	String booksNewTitle = n.nextLine();
+    	//n.close();
+    	return booksNewTitle;
+	}
+	
+	
 	public void viewAllBooks() {
 		
 		try(BufferedReader bufread = new BufferedReader(new FileReader(uri))){
@@ -154,23 +213,6 @@ public class BookServices extends UtilityClass implements Menu{
 		  }
 		}
 	
-int bookMapIterator(HashMap<String, String> map) {
-		
-	//createHashMap(file);
-		
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		//map.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-		for (String item : map.keySet()) {
-			
-			Integer key = Integer.parseInt(item);
-			list.add(key);
-			
-		}
-		Collections.sort(list);
-		return list.get(list.size()-1);
-		
-}
-	
 	public String  bookOptions() {
 		createHashMap(file);
 		StringBuilder strBuilder = new StringBuilder();
@@ -198,7 +240,7 @@ int bookMapIterator(HashMap<String, String> map) {
 			writer.write(data);
 			writer.newLine();
 			
-			System.out.println(title+" has been added");
+			System.out.println("\n"+title+" has been added");
 			writer.flush();
 			
 			
@@ -236,10 +278,9 @@ public HashMap<String, String> createHashMap(File file) {
 			}
 			scan.close();
 			
-			System.out.println(map);
+			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("File Not Found");
 		}
 		
 		return map;
@@ -271,12 +312,16 @@ public HashMap<String, String> createHashMap2(File file) {
 		
 		System.out.println(map);
 	} catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		System.out.println("File Not Found");
 	}
 	
 	return map;
 }
+
+
+
+
+
 	
 public String getAuthor() {
 	Scanner n = new Scanner(System.in);
@@ -299,7 +344,7 @@ public String getAuthor() {
     	authorId = sortPubId(authorServices.createHashMap(AuthorServices.file));
 	} else {
 		
-		bookAuthorId = read_range(n, 1, bookMapIterator(AuthorServices.map));
+		bookAuthorId = read_range(n, 1, mapIterator(AuthorServices.map));
 		
 		authorId = Integer.toString(bookAuthorId);
 		System.out.println("Thanks for choosing the author");
@@ -326,7 +371,7 @@ public String getPublisher() {
     	publisherId = sortPubId(pubServices.createHashMap(PublisherServices.file));
 	} else {
 		
-		bookPublisherId = read_range(n, 1, bookMapIterator(PublisherServices.map)); //PublisherServices.map
+		bookPublisherId = read_range(n, 1, mapIterator(PublisherServices.map)); //PublisherServices.map
 		
 		publisherId = Integer.toString(bookPublisherId);
 		System.out.println("Thanks for choosing the publisher");
@@ -403,8 +448,38 @@ public String getPublisher() {
     
 	}
 	
-	public void editBook() {
+	public void editBook(String a, String b) throws IOException {
+		HashMap<String, String> editedBookMap = createHashMap2(file);
 		
+		editedBookMap.put(a,b);
+		 File file = new File(uri);
+	        BufferedWriter bufreader = null;;
+	        
+	        try{
+	            
+	            //create new BufferedWriter for the output file
+	            bufreader = new BufferedWriter( new FileWriter(file) );
+	 
+	            //iterate map entries
+	            for(Map.Entry<String, String> entry : map.entrySet()){
+	            	
+	                bufreader.write(entry.getKey() + " " + entry.getValue());
+	                
+	                //new line
+	                bufreader.newLine();
+	            }
+	            
+	            bufreader.flush();
+	 
+	        } catch(IOException e){
+	        	
+	            System.out.println("File not found");
+	            
+	        } finally{
+	        	
+	                bufreader.close();
+	            
+	        }
 	}
 }
 

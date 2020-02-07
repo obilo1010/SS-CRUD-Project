@@ -11,7 +11,25 @@ import java.util.HashSet;
 import java.util.TreeMap;
 //import java.util.regex.Pattern;
 
+
+
 public abstract class UtilityClass {
+	
+public static int mapIterator(HashMap<String, String> map) {
+		
+		
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		//map.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
+		for (String item : map.keySet()) {
+			
+			Integer key = Integer.parseInt(item);
+			list.add(key);
+			
+		}
+		Collections.sort(list);
+		return list.get(list.size()-1);
+		
+}
 	
 	protected static int read_range(Scanner scanner, int low, int high) {
 	    int value;
@@ -38,6 +56,7 @@ public abstract class UtilityClass {
 	protected static String sortId(HashMap<String, String> map) {
 		ArrayList<Integer> l = new ArrayList<Integer>();
 		TreeMap<String, String> treeMap = new TreeMap<>(map);
+		System.out.print(map);
 		for (String str : treeMap.keySet()) {
 		    Integer num = Integer.parseInt(str);
 		    l.add(num);
@@ -73,7 +92,10 @@ public abstract class UtilityClass {
 			Integer value = Integer.parseInt(m);
 			
 			
-			if (key == value) {
+			if (key != value) {
+				continue;
+				
+			} else {
 				map.replace(item, n);  
 			}
 		
@@ -92,12 +114,18 @@ public abstract class UtilityClass {
 			Integer value = Integer.parseInt(m);
 			
 			
-			if (key == value) {
-				map.replace(item, n);  
+			if (key != value) {
+				continue;
+				  
+			} else {
+				
+				map.replace(item, n);
+				// if someone enters an author id which doesn't exist because its been deleted, this if statement 
+				//will never be true. call main.displayMenu in this else block
+				//System.out.println("Author Doesnt exist");
+				
 			}
-		
 	}
-		System.out.println("<<"+map+">>");
 		return map;
 }
 	
@@ -134,6 +162,7 @@ public abstract class UtilityClass {
 			// TODO Auto-generated catch block
 			System.out.println("File not found");
 		}
+		System.out.println(Arrays.toString(arrList.toArray()));
 		return arrList;	
 	}
 	
@@ -183,36 +212,36 @@ public int deleteMapIterator(HashMap<String, String> map) {
 			// TODO Auto-generated catch block
 			System.out.println("File not found");
 		}
-		System.out.print(Arrays.toString(arrList.toArray()));
+		
 		return arrList;	
 	}
 	
-protected HashMap<String, String> createBookHashMap(File file) {
-	
-	HashMap<String, String> map = new HashMap<String, String>();
-		
-		try {
-			Scanner scan = new Scanner(file);
-			
-			while(scan.hasNextLine()) {
-				
-				String data = scan.nextLine();
-				String[] strs = data.split("\\s+");
-				
-				map.put(strs[strs.length-2], "0");
-				
-			}
-			scan.close();
-			
-			System.out.println(map);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			System.out.println("File not found");
-		}
-		
-		return map;
-	}
-//
+//protected HashMap<String, String> createBookHashMap(File file) {
+//	
+//	HashMap<String, String> map = new HashMap<String, String>();
+//		
+//		try {
+//			Scanner scan = new Scanner(file);
+//			
+//			while(scan.hasNextLine()) {
+//				
+//				String data = scan.nextLine();
+//				String[] strs = data.split("\\s+");
+//				
+//				map.put(strs[strs.length-2], "0");
+//				
+//			}
+//			scan.close();
+//			
+//			System.out.println(map);
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			System.out.println("File not found");
+//		}
+//		
+//		return map;
+//	}
+////
 //public static String getLineToEdit(Integer input) {
 //	AuthorServices as = new AuthorServices();
 //	String str = null;
@@ -247,6 +276,66 @@ protected HashMap<String, String> createBookHashMap(File file) {
 //	return str;
 //
 //}
+	
+	public String getAuthorForEdit() {
+		
+	AuthorServices authorServices = new AuthorServices();
+	String authorId = "";
+	System.out.println("If your Author is on this List please enter the author's key\n" + "Enter '0' if your author is not shown\n"+authorServices.authorOptions());
+	Scanner u = new Scanner(System.in);
+	String bookAuthor = u.nextLine();            	
+	Integer bookAuthorId = Integer.parseInt(bookAuthor);
+	
+	
+	if (bookAuthorId == 0) {
+		
+		System.out.println("Enter Author's First Name");
+    	String firstName = u.nextLine();
+    	
+    	System.out.println("Enter Author's Last Name");
+    	String lastName = u.nextLine();
+    	
+    	authorServices.addAuthor(firstName, lastName);
+    	authorId = sortPubId(authorServices.createHashMap(AuthorServices.file));
+    	
+	} else {
+		
+		bookAuthorId = read_range(u, 1, mapIterator(AuthorServices.map));
+		
+		authorId = Integer.toString(bookAuthorId);
+		System.out.println("Thanks for choosing the author");
+	}
+	
+	System.out.println(authorId);
+	return authorId;
+}
+	
+	public String getPublisherForEdit() {
+		
+		Scanner n = new Scanner(System.in);
+		String publisherId = null;
+		PublisherServices pubServices = new PublisherServices();
+		System.out.println("If your Publisher is on this List please enter the publishers key\n" + "Enter '0' if your publisher is not shown\n"+pubServices.publisherOptions());
+		String bookPublisher = n.nextLine();
+		Integer bookPublisherId = Integer.parseInt(bookPublisher);
+		
+		if (bookPublisherId == 0) {
+			
+			System.out.println("Enter Publishers Name");
+	    	String pubName = n.nextLine();
+	    	
+	    	pubServices.addPublisher(pubName);
+	    	publisherId = sortPubId(pubServices.createHashMap(PublisherServices.file));
+		} else {
+			
+			bookPublisherId = read_range(n, 1, mapIterator(PublisherServices.map)); //PublisherServices.map
+			
+			publisherId = Integer.toString(bookPublisherId);
+			System.out.println("Thanks for choosing the publisher");
+		}
+		n.close();
+		return publisherId;
+	}
 }
 
 
